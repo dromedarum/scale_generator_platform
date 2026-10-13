@@ -1,0 +1,27 @@
+{
+    "structure_type": "hyperuniform",
+    "Lx_um": 7.0,
+    "Ly_um": 7.0,
+    "network_enabled": true,
+    "network_points": 200,
+    "slab_thickness_um": 2.093,
+    "ridges_enabled": false,
+    "ridge_mode": "fixed_spacing",
+    "ridge_height_um": 0.84,
+    "ridge_width_um": 0.3,
+    "ridge_spacing_um": 1.0,
+    "target_openings_between_ridges": 2,
+    "multilayer_enabled": true,
+    "material_layers_um": [
+        0.12,
+        0.12,
+        0.12
+    ],
+    "air_layers_um": [
+        0.06,
+        0.06,
+        0.06
+    ],
+    "vertical_gap_um": 0.645,
+    "add_bottom_cap": true
+}
