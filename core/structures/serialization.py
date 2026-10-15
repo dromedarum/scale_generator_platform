@@ -5,7 +5,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 from .parameters import StructureParameters
-from .enums import StructureType, RidgeMode
+from .enums import StructureType, RidgeMode, RidgeRootMode
 
 def save_structure_parameters(
         params: StructureParameters,
@@ -18,6 +18,7 @@ def save_structure_parameters(
     #Convert enums to JSON-friendly strings
     data["structure_type"] = params.structure_type.value
     data["ridge_mode"] = params.ridge_mode.value
+    data["ridge_root_mode"] =params.ridge_root_mode.value
 
     filepath = Path(filepath)
 
@@ -45,5 +46,7 @@ def load_structure_parameters(
         data["ridge_mode"]
     )
 
+    data["ridge_root_mode"] = RidgeRootMode(data["ridge_root_mode"])
+    
     return StructureParameters(**data)
 

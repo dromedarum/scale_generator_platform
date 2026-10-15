@@ -9,3 +9,7 @@ class RidgeMode(str, Enum):
     FIXED_SPACING = "fixed_spacing"
     NETWORK_DERIVED = "network_derived"
 
+class RidgeRootMode(str, Enum):
+    NONE = "none"
+    RECTANGULAR_WALL ="rectangular_wall"
+

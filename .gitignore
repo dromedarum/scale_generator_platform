@@ -1,0 +1,30 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Test and temporary files
+test_params.json
+
+# Uploaded/generated geometry
+*.stl
+*.obj
+*.glb
+
+# Local environments and credentials
+.env
+.venv/
+venv/
+
+# IDE files
+.vscode/
+.idea/
+
+# Test caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Operating-system files
+.DS_Store
+Thumbs.db

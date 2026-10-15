@@ -16,3 +16,4 @@ class NetworkMeshBuilder:
 
         structure.network_mesh = mesh
         return structure
+
