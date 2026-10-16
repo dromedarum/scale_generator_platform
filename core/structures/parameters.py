@@ -53,6 +53,7 @@ class StructureParameters:
         default_factory=lambda: [0.12, 0.12, 0.12]
     )
     material_layer_variation: float = 0.0
+    
     air_layers_um: list[float] = field(
         default_factory=lambda: [0.06, 0.06]
     )

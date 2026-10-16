@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from core.structures import ButterflyStructure, StructureParameters
+from core.structures.components import GeometryComponent
 
 from generators.network.builder import HyperuniformBuilder
 from generators.network.footprint_builder import NetworkFootprintBuilder
@@ -11,7 +12,8 @@ from generators.ridges.mesh_builder import RidgeMeshBuilder
 from generators.assembly.scaffold_builder import ScaffoldBuilder
 from generators.laminae.builder import LaminaBuilder
 
-def generate_scaffold(
+
+def generate_structure(
         parameters: StructureParameters,
 ) -> ButterflyStructure:
     """
@@ -41,4 +43,43 @@ def generate_scaffold(
     if parameters.multilayer_enabled:
         structure = LaminaBuilder.build(structure)
 
+    structure.components.clear()
+    if structure.scaffold_mesh is not None:
+        structure.components.append(
+            GeometryComponent(
+                name="scaffold",
+                mesh=structure.scaffold_mesh,
+                role="scaffold",
+                metadata={
+                    "contains_network": structure.network_mesh is not None,
+                    "contains_ridges": structure.ridge_mesh is not None
+                }
+            )
+        )
+
+    if structure.laminae is not None:
+        for index, layer_mesh in enumerate(structure.laminae.layer_meshes):
+            structure.components.append(
+                GeometryComponent(
+                    name=f"lamina_{index+1}",
+                    mesh=layer_mesh,
+                    role="lamina",
+                    metadata={
+                        "layer_index": index,
+                        "thickness_um": (structure.laminae.material_layer_thickness_um[index]),
+                        "bottom_z_um": structure.laminae.layer_bottom_z_um[index],
+                        "top_z_um": structure.laminae.layer_top_z_um[index]
+                    }
+                )
+            )
+
     return structure
+
+def generate_scaffold(
+    parameters: StructureParameters,
+) -> ButterflyStructure:
+    """
+    Compability alias for older experiment scripts.
+    New code should call genereate_structure().
+    """
+    return generate_structure(parameters)

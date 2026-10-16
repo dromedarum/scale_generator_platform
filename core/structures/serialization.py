@@ -47,6 +47,6 @@ def load_structure_parameters(
     )
 
     data["ridge_root_mode"] = RidgeRootMode(data["ridge_root_mode"])
-    
+
     return StructureParameters(**data)
 

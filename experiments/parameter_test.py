@@ -2,7 +2,7 @@ from core.structures import (
     StructureParameters,
     RidgeMode,
 )
-
+from pathlib import Path
 
 def print_header(title: str):
     print()
@@ -149,3 +149,7 @@ print(params == loaded)
 
 print()
 print("All parameter tests completed.")
+
+test_path = Path("test_params.json")
+if test_path.exists():
+    test_path.unlink()

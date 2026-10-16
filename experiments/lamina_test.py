@@ -2,12 +2,8 @@ from __future__ import annotations
 import numpy as np
 import matplotlib.pyplot as plt
 
-from visualization.xz_cross_section import plot_xz_cross_section
 from core.structures import StructureParameters
-from generators.pipeline import generate_scaffold
-
-from core.structures import StructureParameters
-from generators.pipeline import generate_scaffold
+from generators.pipeline import generate_structure
 
 
 def generate_lamina_realization(
@@ -32,7 +28,7 @@ def generate_lamina_realization(
         random_seed=seed,
     )
 
-    return generate_scaffold(params)
+    return generate_structure(params)
 
 
 structure_a = generate_lamina_realization(42)

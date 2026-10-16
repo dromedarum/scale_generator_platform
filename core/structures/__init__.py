@@ -1,8 +1,12 @@
 from .parameters import StructureParameters
-from .enums import StructureType, RidgeMode, RidgeRootMode
+from .enums import StructureType, RidgeMode, RidgeRootMode, GeometryOrigin, LengthUnit, ImportTransformMode
 from .serialization import (save_structure_parameters, load_structure_parameters)
 from .structure import ButterflyStructure
-from. laminae import LaminaSystem
+from .components import GeometryComponent
+from .laminae import LaminaSystem
+from .import_config import GeometryImportConfig
+from .import_spec import GeometryImportSpec
+from .assemly_import_config import AssemblyImportConfig
 
 __all__ = [
     "StructureParameters",
@@ -13,4 +17,11 @@ __all__ = [
     "save_structure_parameters",
     "load_structure_parameters",
     "ButterflyStructure",
+    "GeometryOrigin",
+    "GeometryComponent",
+    "LengthUnit",
+    "GeometryImportConfig"
+    "GeometryImportSpec"
+    "ImportTransformMode"
+    "AssemblyImportConfig"
 ]

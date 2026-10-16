@@ -13,3 +13,16 @@ class RidgeRootMode(str, Enum):
     NONE = "none"
     RECTANGULAR_WALL ="rectangular_wall"
 
+class GeometryOrigin(str, Enum):
+    GENERATED = "generated"
+    IMPORTED = "imported"
+
+class LengthUnit(str, Enum):
+    MICROMETER = "um",
+    NANOMETER = "nm",
+    MILIMETER = "mm",
+    METER = "m"
+
+class ImportTransformMode(str, Enum):
+    PRESERVE = "preserve"
+    NORMALIZE_ASSEMBLY = "normalize_assembly"

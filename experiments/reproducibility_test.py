@@ -1,16 +1,18 @@
 import numpy as np 
 from core.structures import ButterflyStructure, StructureParameters
 from core.structures.enums import RidgeMode
-
+"""
 from generators.network.builder import HyperuniformBuilder
 from generators.network.footprint_builder import NetworkFootprintBuilder
 from generators.network.mesh_builder import NetworkMeshBuilder
 from generators.ridges.builder import RidgeBuilder
 from generators.ridges.footprint_builder import RidgeFootprintBuilder
 from generators.ridges.mesh_builder import RidgeMeshBuilder
-from generators.assembly.scaffold_builder import ScaffoldBuilder
+from generators.assembly.scaffold_builder import ScaffoldBuilder """
 
-def generate_structure(
+from generators.pipeline import generate_structure
+
+def generate_structure_with_seed(
         seed: int,
 ) -> ButterflyStructure:
     params = StructureParameters(
@@ -20,21 +22,12 @@ def generate_structure(
         random_seed=seed,
     )
 
-    structure = ButterflyStructure(parameters=params)
-    structure = HyperuniformBuilder.generate_seed_points(structure)
-    structure = HyperuniformBuilder.relax_points(structure)
-    structure = HyperuniformBuilder.build_network(structure)
-    structure = NetworkFootprintBuilder.build(structure, width=params.strut_width_um)
-    structure = NetworkMeshBuilder.build(structure)
-    structure = RidgeBuilder.generate(structure)
-    structure = RidgeFootprintBuilder.build(structure)
-    structure = RidgeMeshBuilder.build(structure)
-    structure = ScaffoldBuilder.build(structure)
-    return structure
+    structure = generate_structure(params)
+    return structure 
 
-structure_a = generate_structure(42)
-structure_b = generate_structure(42)
-structure_c = generate_structure(43)
+structure_a = generate_structure_with_seed(42)
+structure_b = generate_structure_with_seed(42)
+structure_c = generate_structure_with_seed(43)
 
 np.testing.assert_allclose(structure_a.network.seed_points, structure_b.network.seed_points)
 np.testing.assert_allclose(structure_a.network.relaxed_points, structure_b.network.relaxed_points)

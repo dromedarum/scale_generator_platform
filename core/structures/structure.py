@@ -4,7 +4,11 @@ from .parameters import StructureParameters
 from .network import HyperuniformNetwork
 from .ridges import RidgeSystem
 from .laminae import LaminaSystem
+from .components import GeometryComponent
+from .enums import GeometryOrigin
+
 from dataclasses import dataclass, field
+
 from typing import Any
 
 @dataclass
@@ -14,7 +18,10 @@ class ButterflyStructure:
     Geometry may be attached later by builders.
     """
 
-    parameters: StructureParameters
+    parameters: StructureParameters | None = None
+
+    origin: GeometryOrigin = GeometryOrigin.GENERATED
+    source_path: str | None = None
 
     network: HyperuniformNetwork | None = None
     network_footprint: Any | None = None
@@ -25,6 +32,8 @@ class ButterflyStructure:
     laminae: LaminaSystem | None = None
     lamina_mesh: Any | None = None
     scaffold_mesh: Any | None = None
+
+    components: list[GeometryComponent] = field(default_factory=list)
     
 
 

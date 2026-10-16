@@ -6,7 +6,7 @@ from core.structures import StructureParameters
 from core.structures.enums import RidgeMode
 from core.structures.validation import validate_structure_geometry
 
-from generators.pipeline import generate_scaffold
+from generators.pipeline import generate_structure
 
 from visualization.xz_cross_section import plot_xz_cross_section
 
@@ -16,7 +16,7 @@ params = StructureParameters(
     ridge_placement_variation=0.0
     )
 
-structure = generate_scaffold(params)
+structure = generate_structure(params)
 structure.scaffold_mesh.show()
 report = validate_structure_geometry(structure)
 
