@@ -1,5 +1,13 @@
 from .parameters import StructureParameters
-from .enums import StructureType, RidgeMode, RidgeRootMode, GeometryOrigin, LengthUnit, ImportTransformMode
+from .enums import (
+    StructureType, 
+    RidgeMode, 
+    RidgeRootMode, 
+    GeometryOrigin, 
+    LengthUnit, 
+    ImportTransformMode, 
+    ComponentRole,
+)
 from .serialization import (save_structure_parameters, load_structure_parameters)
 from .structure import ButterflyStructure
 from .components import GeometryComponent
@@ -24,4 +32,5 @@ __all__ = [
     "GeometryImportSpec"
     "ImportTransformMode"
     "AssemblyImportConfig"
+    "ComponentRole"
 ]

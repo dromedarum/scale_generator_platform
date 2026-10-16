@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from hashlib import sha256
 
 import numpy as np
 import trimesh
@@ -51,6 +52,14 @@ def _load_single_mesh(path: Path, *, process_mesh: bool) -> trimesh.Trimesh:
 
     return loaded
 
+def _sha256_file(path: Path,) -> str:
+    hasher = sha256()
+
+    with path.open("rb") as file_handle:
+        for chunk in iter(lambda: file_handle.read(1024 * 1024), b""):
+            hasher.update(chunk)
+    return hasher.hexdigest()
+
 
 def _import_component(path: str | Path, config: GeometryImportConfig) -> GeometryComponent:
     source_path = Path(path)
@@ -82,6 +91,7 @@ def _import_component(path: str | Path, config: GeometryImportConfig) -> Geometr
         if config.require_volume and not mesh.is_volume:
             raise ValueError(f"Imported mesh is not recognized as a closed volume: {source_path}")
 
+    source_hash = _sha256_file(source_path)
     return GeometryComponent(
         name=config.component_name,
         mesh=mesh,
@@ -91,7 +101,12 @@ def _import_component(path: str | Path, config: GeometryImportConfig) -> Geometr
             "source_unit": config.source_unit.value,
             "scale_to_um": scale_to_um,
             "process_mesh": config.process_mesh,
+            "watertight_after_import": bool(mesh.is_watertight),
+            "volume_after_import": mesh.is_volume,
+            "vertex_count_after_import": int(len(mesh.vertices)),
+            "face_count_after_import": int(len(mesh.faces)),
             "original_file_name": source_path.name,
+            "source_sha256": source_hash,
         }
     )
 
@@ -171,3 +186,6 @@ def import_structure_components(
         source_path=None,
         components=components,
     )
+
+
+

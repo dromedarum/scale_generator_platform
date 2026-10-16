@@ -26,3 +26,10 @@ class LengthUnit(str, Enum):
 class ImportTransformMode(str, Enum):
     PRESERVE = "preserve"
     NORMALIZE_ASSEMBLY = "normalize_assembly"
+
+class ComponentRole(str, Enum):
+    SCAFFOLD = "scaffold"
+    LAMINA = "lamina"
+    SUBSTRATE = "substrate"
+    IMPORTED = "imported"
+

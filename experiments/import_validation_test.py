@@ -3,7 +3,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 
 import trimesh
-from core.structures import GeometryImportConfig, LengthUnit
+from core.structures import GeometryImportConfig, LengthUnit, ComponentRole
 
 from core.structures.validation import validate_mesh
 from generators.imported.loader import import_structure
@@ -18,7 +18,7 @@ with TemporaryDirectory() as temporary_directory:
     config = GeometryImportConfig(
         source_unit=LengthUnit.NANOMETER,
         component_name="validated_import",
-        component_role="scaffold",
+        component_role=ComponentRole.SCAFFOLD,
         process_mesh=True,
         require_watertight=True,
         require_volume=True,

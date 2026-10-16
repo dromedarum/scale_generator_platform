@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from .enums import LengthUnit
+from .enums import LengthUnit, ComponentRole
 
 @dataclass
 class GeometryImportConfig:
@@ -11,7 +11,7 @@ class GeometryImportConfig:
     """
     source_unit: LengthUnit = LengthUnit.MICROMETER
     component_name: str = "imported_component"
-    component_role: str = "imported"
+    component_role: ComponentRole = ComponentRole.IMPORTED
 
     process_mesh: bool = True
     require_watertight: bool = True

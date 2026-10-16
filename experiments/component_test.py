@@ -1,4 +1,4 @@
-from core.structures import GeometryOrigin, StructureParameters
+from core.structures import GeometryOrigin, StructureParameters, ComponentRole
 from generators.pipeline import generate_structure
 
 import numpy as np
@@ -22,7 +22,7 @@ scaffold_component = structure.components[0]
 lamina_components = structure.components[1:]
 
 assert scaffold_component.name == "scaffold"
-assert scaffold_component.role == "scaffold"
+assert scaffold_component.role == ComponentRole.SCAFFOLD
 
 assert scaffold_component.mesh is structure.scaffold_mesh
 
@@ -35,7 +35,7 @@ for index, component in enumerate(lamina_components):
     expected_top_z = float(structure.laminae.layer_top_z_um[index])
 
     assert component.name == expected_name
-    assert component.role == "lamina"
+    assert component.role == ComponentRole.LAMINA
 
     assert component.metadata["layer_index"] == index
     assert np.isscalar(component.metadata["thickness_um"])
@@ -64,7 +64,7 @@ print("Structure Origin:", structure.origin)
 print("Number of canonical components:", len(structure.components))
 
 for component in structure.components:
-    print(component.name, component.role, component.mesh.bounds, component.metadata)
+    print(component.name, component.role.value, component.mesh.bounds, component.metadata)
 
 print("PASS: generated structure exposes canonical simulation components.")
 

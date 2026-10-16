@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from core.structures import ButterflyStructure, StructureParameters
+from core.structures import ButterflyStructure, StructureParameters, ComponentRole
 from core.structures.components import GeometryComponent
 
 from generators.network.builder import HyperuniformBuilder
@@ -49,7 +49,7 @@ def generate_structure(
             GeometryComponent(
                 name="scaffold",
                 mesh=structure.scaffold_mesh,
-                role="scaffold",
+                role=ComponentRole.SCAFFOLD,
                 metadata={
                     "contains_network": structure.network_mesh is not None,
                     "contains_ridges": structure.ridge_mesh is not None
@@ -63,7 +63,7 @@ def generate_structure(
                 GeometryComponent(
                     name=f"lamina_{index+1}",
                     mesh=layer_mesh,
-                    role="lamina",
+                    role=ComponentRole.LAMINA,
                     metadata={
                         "layer_index": index,
                         "thickness_um": (structure.laminae.material_layer_thickness_um[index]),

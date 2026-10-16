@@ -9,7 +9,8 @@ from core.structures import (GeometryImportConfig,
                             LengthUnit, 
                             GeometryImportSpec, 
                             AssemblyImportConfig, 
-                            ImportTransformMode)
+                            ImportTransformMode,
+                            ComponentRole)
 from generators.imported.loader import import_structure_components, import_structure
 
 with TemporaryDirectory() as temporary_directory:
@@ -17,7 +18,7 @@ with TemporaryDirectory() as temporary_directory:
     config = GeometryImportConfig(
         source_unit=LengthUnit.NANOMETER,
         component_name="imported_test_component",
-        component_role="scaffold",
+        component_role=ComponentRole.SCAFFOLD,
         process_mesh=True,
         require_watertight=True,
         require_volume=True,
@@ -38,7 +39,7 @@ with TemporaryDirectory() as temporary_directory:
     component = structure.components[0]
 
     assert component.name == "imported_test_component"
-    assert component.role == "scaffold"
+    assert component.role == ComponentRole.SCAFFOLD
 
     np.testing.assert_allclose(
         component.mesh.extents,
@@ -66,6 +67,12 @@ with TemporaryDirectory() as temporary_directory:
                             }[config.source_unit]
     np.testing.assert_allclose(component.metadata["scale_to_um"], expected_scale_to_um, atol=1e-15)
 
+    source_hash = component.metadata["source_sha256"]
+    assert isinstance(source_hash, str)
+    assert len(source_hash) == 64
+
+    int(source_hash, 16)
+
     print("PASS: one-file geometry import creates a canonical imported ButterflyStructure in micrometers.")
 
 with TemporaryDirectory() as temporary_directory:
@@ -89,7 +96,7 @@ with TemporaryDirectory() as temporary_directory:
             config=GeometryImportConfig(
                 source_unit=LengthUnit.NANOMETER,
                 component_name="scaffold",
-                component_role="scaffold",
+                component_role=ComponentRole.SCAFFOLD,
                 process_mesh=True,
                 require_watertight=True,
                 require_volume=True,
@@ -102,7 +109,7 @@ with TemporaryDirectory() as temporary_directory:
             config=GeometryImportConfig(
                 source_unit=LengthUnit.NANOMETER,
                 component_name="lamina_1",
-                component_role="lamina",
+                component_role=ComponentRole.LAMINA,
                 process_mesh=True,
                 require_watertight=True,
                 require_volume=True,
@@ -128,8 +135,8 @@ with TemporaryDirectory() as temporary_directory:
     desired_lamina_center_nm = desired_lamina_top_nm - lamina_half_thickness
     lamina_source.apply_translation([0.0, 0.0, desired_lamina_center_nm])
 
+    print("Name, Extents, Source Path, Original name")
     for component in structure.components:
-        print("Name, Extents, Source Path, Original name")
         print(component.name, component.mesh.extents, component.metadata["source_path"], component.metadata["original_file_name"])
     assert structure.origin == GeometryOrigin.IMPORTED
     assert structure.parameters is None
@@ -141,11 +148,10 @@ with TemporaryDirectory() as temporary_directory:
     lamina_component = structure.components[1]
 
     assert scaffold_component.name == "scaffold"
-    assert scaffold_component.role == "scaffold"
+    assert scaffold_component.role == ComponentRole.SCAFFOLD
 
     assert lamina_component.name == "lamina_1"
-    assert lamina_component.role == "lamina"
-
+    assert lamina_component.role == ComponentRole.LAMINA
     scaffold_bottom = float(scaffold_component.mesh.bounds[0, 2])
     lamina_top = float(lamina_component.mesh.bounds[1, 2])
     acutal_gap_um = scaffold_bottom - lamina_top
@@ -163,6 +169,8 @@ with TemporaryDirectory() as temporary_directory:
 
     assert(scaffold_component.metadata["source_unit"] == "nm")
     assert(lamina_component.metadata["source_unit"] == "nm")
+
+    assert scaffold_component.metadata["source_sha256"] != lamina_component.metadata["source_sha256"]
 
     print("PASS: multiple imported files retain independent canonical geometry components.")
     

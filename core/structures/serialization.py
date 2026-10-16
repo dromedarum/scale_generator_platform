@@ -25,7 +25,7 @@ def save_structure_parameters(
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
-    print(f"Saved structure parameters to {filepath}")
+    #print(f"Saved structure parameters to {filepath}")
 
 def load_structure_parameters(
         filepath: str | Path,
